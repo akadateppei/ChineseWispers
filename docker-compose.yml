@@ -1,0 +1,11 @@
+version: "3"
+services:
+  node:
+    container_name: node
+    build: .
+    volumes:
+      - ./app:/app
+    tty: true
+    ports:
+      - 3000:3000
+#    command: node server.js
