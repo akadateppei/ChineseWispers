@@ -1,17 +1,20 @@
 const express = require('express');
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const https = require('https').createServer(app);
+const io = require('socket.io')(https);
 players = [];
 listeners = [];
 streamer = "";
 nextStreamer = "";
 others = [];
 
+https.createServer({pfx: fs.readFileSync('mysslserver.pfx')},
+    app.get('/', (req, res) => {
+        res.sendFile(__dirname + '/index.html');
+    }));
+
 // index.htmlを表示
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
+
 
 app.use(express.static('public'));
 
@@ -26,15 +29,16 @@ io.on('connection', (socket) => {
         streamer = "";
         nextStreamer = "";
         others = [];
-        if (players.length > 1){
+        if (players.length > 1) {
             startGame();
-        };
+        }
+        ;
     });
 
     function startGame() {
         console.log("はい");
         console.log(players.length);
-        for (let i = 0; i !== players.length-1; i++) {
+        for (let i = 0; i !== players.length - 1; i++) {
             listeners.push(players[i]);
             streamer = players[i];
             nextStreamer = players[i + 1];
@@ -46,11 +50,12 @@ io.on('connection', (socket) => {
             console.log('1秒まつ');
             wait(40);
             // wait(31);
-        };
+        }
+        ;
     };
 
-    socket.on('disconnect', ()=>{
-       console.log('user disconnected') ;
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
     });
 });
 
@@ -66,13 +71,13 @@ function getStreamer(players) { // 先頭をplayerとして取り出し、それ
 
 const wait = (sec) => {
     return new Promise((resolve, reject) => {
-        setTimeout(resolve, sec*1000);
+        setTimeout(resolve, sec * 1000);
         //setTimeout(() => {reject(new Error("エラー！"))}, sec*1000);
     });
 };
 
 
 // port3000でlisten
-http.listen(3000, () => {
+https.listen(3000, () => {
     console.log('listening on *:3000');
 });
