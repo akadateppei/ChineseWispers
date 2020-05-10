@@ -1,18 +1,23 @@
 const express = require('express');
-const fs = require('fs');
+const fs = require('fs')
 const app = express();
 const https = require('https').createServer(app);
 const io = require('socket.io')(https);
+const options = {
+    key: fs.readFileSync('./work/mysslserver.key'),
+    cert: fs.readFileSync('./work/mysslserver.key')
+};
+const server = https.createServer(options, app);
 players = [];
 listeners = [];
 streamer = "";
 nextStreamer = "";
 others = [];
 
-https.createServer({pfx: fs.readFileSync('./work/mysslserver.pfx')},
-    app.get('/', (req, res) => {
-        res.sendFile(__dirname + '/index.html');
-    }));
+https.createServer({pfx: fs.readFileSync('mysslserver.pfx')});
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+})
 
 // index.htmlを表示
 
@@ -79,6 +84,6 @@ const wait = (sec) => {
 
 
 // port3000でlisten
-https.listen(3000, () => {
+server.listen(3000, () => {
     console.log('listening on *:3000');
 });
