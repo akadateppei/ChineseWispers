@@ -1,11 +1,11 @@
 const express = require('express');
 const fs = require('fs')
 const app = express();
-const https = require('https').createServer(app);
+const https = require('https');
 const io = require('socket.io')(https);
 const options = {
-    key: fs.readFileSync('./work/mysslserver.key'),
-    cert: fs.readFileSync('./work/mysslserver.key')
+   key: fs.readFileSync('orekey.pem'),
+    cert: fs.readFileSync('orecert.pem')
 };
 const server = https.createServer(options, app);
 players = [];
@@ -14,7 +14,6 @@ streamer = "";
 nextStreamer = "";
 others = [];
 
-https.createServer({pfx: fs.readFileSync('mysslserver.pfx')});
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
