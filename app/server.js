@@ -1,13 +1,13 @@
 const express = require('express');
 const fs = require('fs')
 const app = express();
-const https = require('https');
-const io = require('socket.io')(https);
-const options = {
-   key: fs.readFileSync('./work/orekey.pem'),
-    cert: fs.readFileSync('./work/orecert.pem')
-};
-const server = https.createServer(options, app);
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+// const options = {
+//    key: fs.readFileSync('./work/orekey.pem'),
+//     cert: fs.readFileSync('./work/orecert.pem')
+// };
+// const server = https.createServer(options, app);
 players = [];
 listeners = [];
 streamer = "";
@@ -83,6 +83,6 @@ const wait = (sec) => {
 
 
 // port3000でlisten
-server.listen(3000, () => {
-    console.log('listening on *:3000');
+http.listen(3000, () => {
+    console.log('listening on *:80');
 });
