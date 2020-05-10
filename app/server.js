@@ -9,7 +9,7 @@ streamer = "";
 nextStreamer = "";
 others = [];
 
-https.createServer({pfx: fs.readFileSync('/work/mysslserver.pfx')},
+https.createServer({pfx: fs.readFileSync('./work/mysslserver.pfx')},
     app.get('/', (req, res) => {
         res.sendFile(__dirname + '/index.html');
     }));
