@@ -1,42 +1,39 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
-<!--    <script type="text/javascript" src="public/script.js"></script>-->
-    <script>
-        // const Peer = require('skyway-js');
-        const peer = new Peer({
-            key: '672ecab7-6a69-4ae8-814f-f3a50e089d6c',
-            debug: 3
-        });
-
-        peer.on('open', () => {
-            document.getElementById('my-id').textContent = peer.id;
-        });
-
-        let localStream = null;
-
-        // カメラ映像取得
-        navigator.mediaDevices.getUserMedia({video: true, audio: true})
-            .then(stream => {
-                // 成功時にvideo要素にカメラ映像をセットし、再生
-                const videoElm = document.getElementById('my-video')
-                videoElm.srcObject = stream;
-                videoElm.play();
-                // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
-                localStream = stream;
-            }).catch(error => {
-            // 失敗時にはエラーログを出力
-            console.error('mediaDevice.getUserMedia() error:', error);
-            return;
-        });
-    </script>
-    <title>SkyWayチュートリアル</title>
+<html>
+<head lang="ja">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>SkyWay JS SDK Tutorial</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
- <video id="my-video" width="400px" autoplay muted playsinline></video>
- <p id="my-id"></p>
+<div class="videosContainer">
+    <video id="myStream" autoplay muted="true"></video>
+</div>
+
+<div class="myControllerContainer">
+    <p>Your id: <span id="my-id">...</span></p>
+    <div class="select">
+        <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
+    </div>
+    <div class="select">
+        <label for="videoSource">Video source: </label><select id="videoSource"></select>
+    </div>
+    <form id="make-call">
+        <input type="text" placeholder="Join room..." id="join-room">
+        <button type="submit">Join</button>
+    </form>
+    <div id="end-call">
+        <p>Currently in room <span id="room-id">...</span></p>
+        <button>Leave</button>
+    </div>
+    <div id="game-start">
+        <button>Start</button>
+    </div>
+
+</div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="script.js"></script>
 </body>
 </html>
