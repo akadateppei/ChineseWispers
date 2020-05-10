@@ -4,8 +4,8 @@ const app = express();
 const https = require('https');
 const io = require('socket.io')(https);
 const options = {
-   key: fs.readFileSync('orekey.pem'),
-    cert: fs.readFileSync('orecert.pem')
+   key: fs.readFileSync('./work/orekey.pem'),
+    cert: fs.readFileSync('./work/orecert.pem')
 };
 const server = https.createServer(options, app);
 players = [];
